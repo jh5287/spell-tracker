@@ -76,7 +76,7 @@ export default function Home() {
     const foundClass = classes.find(cls => cls.name === e.target.value);
     if (foundClass) {
       console.log("foundClass", foundClass);
-      setSelectedClass(foundClass.name);
+      setSelectedClass(foundClass);
     }
   };
 
