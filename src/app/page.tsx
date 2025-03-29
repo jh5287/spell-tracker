@@ -20,6 +20,22 @@ interface ClassData {
   levels: Levels[];
 }
 
+interface Spell {
+  _id: string; // Assuming you'll convert ObjectId to a string
+  name: string;
+  level: number;
+  school: string;
+  casting_time: string;
+  range: string;
+  components: string[];
+  material?: string; // Optional, since some spells may not have materials
+  duration: string;
+  classes: string[];
+  damage_type: string;
+  description: string;
+  higher_levels?: string; // Optional, since some spells may not have scaling effects
+}
+
 export default function Home() {
 
   useEffect(() => {
@@ -48,7 +64,7 @@ export default function Home() {
     fetchClasses();
     fetchSpells();
   }, []);
-  const [spells, setSpells] = useState([]);
+  const [spells, setSpells] = useState<Spell[]>([]);
   const [classes, setClasses] = useState<ClassData[]>([]);
   const [selectedClass, setSelectedClass] = useState<ClassData>({
     _id: "",
