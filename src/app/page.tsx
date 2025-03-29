@@ -17,7 +17,7 @@ interface ClassData {
   _id: string;
   name: string;
   spellCaster: boolean;
-  levels: Levels[];
+  levels: Levels;
 }
 
 interface Spell {
@@ -70,7 +70,7 @@ export default function Home() {
     _id: "",
     name: "",
     spellCaster: false,
-    levels: [],
+    levels: {} as Levels, 
   });
   const [selectedLevel, setSelectedLevel] = useState<Record<number, number> | null>(null);
   const [loading, setLoading] = useState(true);
