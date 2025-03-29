@@ -6,11 +6,11 @@ import { mdiCheck } from '@mdi/js';
 
 
 interface Levels {
-  lvl1: any[];
-  lvl2: any[];
-  lvl3: any[];
-  lvl4: any[];
-  lvl5: any[];
+  lvl1: Record<number, number>;
+  lvl2: Record<number, number>;
+  lvl3: Record<number, number>;
+  lvl4: Record<number, number>;
+  lvl5: Record<number, number>;
 }
 
 interface ClassData {
@@ -72,7 +72,7 @@ export default function Home() {
     spellCaster: false,
     levels: [],
   });
-  const [selectedLevel, setSelectedLevel] = useState("");
+  const [selectedLevel, setSelectedLevel] = useState<Record<number, number> | null>(null);
   const [loading, setLoading] = useState(true);
 
   const [disableRemove, setDisableRemove] = useState<boolean>(true);
@@ -96,6 +96,18 @@ export default function Home() {
     }
   };
 
+  const handleLevelChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const levelKey = e.target.value as keyof Levels; // Explicitly cast to keyof Levels
+    
+    if (selectedClass?.levels && levelKey in selectedClass.levels) {
+      console.log("Level Key:", levelKey);
+      console.log("Selected thingy:", selectedClass.levels[levelKey]);
+      setSelectedLevel(selectedClass.levels[levelKey]); 
+    } else {
+      setSelectedLevel(null);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <label className="btn btn-circle swap swap-rotate m-5">
@@ -116,7 +128,7 @@ export default function Home() {
       </label>
       <div className="flex flex-col items-center">
         <h1 className="text-4xl text-black">Spell Tracker</h1>
-        <select
+        <select // This select will allow the user to choose a class
           value={selectedClass.name}
           onChange={(e) => handleClassChange(e)}
           className="select select-bordered select-primary w-full max-w-xs m-5 text-white">
@@ -133,17 +145,17 @@ export default function Home() {
         </div>
         <div className="flex flex-col items-center">
         <select
-          value={selectedLevel}
-          onChange={(e) => setSelectedLevel(e.target.value)}
-          className="select select-bordered select-primary w-full max-w-xs m-5 text-white">
-          <option value="">Select a Level</option>
-          {selectedClass?.levels &&
-          Object.entries(selectedClass.levels).map(([levelKey]) => (
-            <option key={levelKey} value={levelKey}>
-              {levelKey}
-          </option>
-            ))}
-        </select>
+  disabled={!selectedClass.spellCaster}
+  onChange={handleLevelChange}
+  className="select select-bordered select-primary w-full max-w-xs m-5 text-white">
+  <option value="">Select a Level</option>
+  {selectedClass?.levels &&
+    Object.entries(selectedClass.levels).map(([levelKey]) => (
+      <option key={levelKey} value={levelKey}>
+        {levelKey}
+      </option>
+    ))}
+</select>
         </div>
 
       <div className="grid grid-cols-2 gap-8 p-8 ">
