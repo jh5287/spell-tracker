@@ -76,7 +76,7 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
 
   const [disableRemove, setDisableRemove] = useState<boolean>(true);
-  const [spellLvl, setSpellLvl] = useState<string[]>(["One", "Two", "Three"]);
+  const [spellLvl, setSpellLvl] = useState<Spell[]>([]);
   const addSpellLvl = () => {
     if (spellLvl.length != 9){
       setSpellLvl([...spellLvl, `${spellLvl.length + 1}`]);
@@ -159,9 +159,15 @@ export default function Home() {
         </div>
 
       <div className="grid grid-cols-2 gap-8 p-8 ">
-          {spellLvl.map((lvl) => (
+          {spellLvl?.map((lvl) => (
             <SpellLevel key={lvl} level={lvl} disableRemove={disableRemove}/>
           ))}
+          {selectedClass?.levels &&
+    Object.entries(selectedClass.levels).map(([levelKey]) => (
+      <option key={levelKey} value={levelKey}>
+        {levelKey}
+      </option>
+    ))}
           <button onClick={() => addSpellLvl()} className={disableRemove ? "hidden w-6" : "btn btn-primary m-3"}>
             Add new level
           </button>
